@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MotoMotoFood.Models;
 
 namespace MotoMotoFood.Services
 {
@@ -64,7 +65,7 @@ namespace MotoMotoFood.Services
                 Console.Write(mensagem);
                 string entrada = Console.ReadLine();
 
-                if (!string.IsNullOrWhiteSpace(entrada) && decimal.TryParse(entrada, out valor))
+                if (!string.IsNullOrWhiteSpace(entrada) && decimal.TryParse(entrada, out valor) && valor > 0)
                     return valor;
 
                 Console.WriteLine("Valor inválido! Digite um número decimal válido.");
@@ -79,11 +80,49 @@ namespace MotoMotoFood.Services
                 Console.Write(mensagem);
                 string entrada = Console.ReadLine();
 
-                if (!string.IsNullOrWhiteSpace(entrada) && int.TryParse(entrada, out valor))
+                if (!string.IsNullOrWhiteSpace(entrada) && int.TryParse(entrada, out valor) && valor > 0)
                     return valor;
 
                 Console.WriteLine("Valor inválido! Digite um número inteiro válido.");
             }
+        }
+
+        public static int LerInteiroComValorMaximo(string mensagem, int maxRange)
+        {
+            while (true)
+            {
+                Console.Write(mensagem);
+                if(int.TryParse(Console.ReadLine(), out int escolha) && escolha <= maxRange && escolha > 0)
+                {
+                    return escolha-1;
+                }
+                Console.WriteLine("Opção inválida! Digite um número válido.");
+            }
+        }
+
+        public static void LerOpcaoSair()
+        {
+            Console.WriteLine("\nAperte ENTER para sair");
+            Console.ReadLine();
+        }
+
+        public static int LerOpcaoListaProdutos(List<Produto> produtos)
+        {
+            Console.Clear();
+            Console.WriteLine("Escolha um dos produtos para editar:\n");
+            if (!produtos.Any())
+            {
+                Console.WriteLine("Nenhum produto cadastrado.");
+                LerOpcaoSair();
+                return -1;
+            }
+
+            for (int i = 0; i < produtos.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} - {produtos[i]}");
+            }
+
+            return LerInteiroComValorMaximo("\nDigite o número do produto que deseja remover: ", produtos.Count);
         }
 
         public static string LerCnpj(string mensagem)
@@ -113,6 +152,16 @@ namespace MotoMotoFood.Services
                     return entrada;
 
                 Console.WriteLine("Entrada inválida! CPF inválido.");
+            }
+        }
+
+        public static void LerValorParaSaque(string mensagem, Conta conta)
+        {
+            while (true) {
+                if (conta.DeduzirSaldo(LerDecimal(mensagem))){
+                    return;
+                }
+                Console.WriteLine("Saldo insuficiente!");
             }
         }
 

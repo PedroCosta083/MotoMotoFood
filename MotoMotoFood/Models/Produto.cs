@@ -4,11 +4,11 @@ namespace MotoMotoFood.Models
 {
     public class Produto
     {
-        public string Nome { get; }
-        public decimal Preco { get; private set; }
-        public string Descricao { get; }
-        public int Quantidade { get; private set; }
-        public int TempoPreparo { get; }
+        public string Nome { get; set; }
+        public decimal Preco { get; set; }
+        public string Descricao { get; set; }
+        public int Quantidade { get; set; }
+        public int TempoPreparo { get; set; }
 
         public Produto(string nome, decimal preco, string descricao, int quantidade, int tempoPreparo)
         {
@@ -64,5 +64,11 @@ namespace MotoMotoFood.Models
             if (tempoPreparo < 0)
                 throw new ArgumentException("O tempo de preparo não pode ser negativo.");
         }
+
+        public override string? ToString()
+        {
+            return $"Nome: {Nome}\nPreço: {Preco:C}\nDescricao: {Descricao}\nQuantidade: {Quantidade}\nTempo preparo: {TempoPreparo} minutos";
+        }
+
     }
 }
