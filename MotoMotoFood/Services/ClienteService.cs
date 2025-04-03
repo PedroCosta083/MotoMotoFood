@@ -56,14 +56,14 @@ namespace DeliveryConsoleApp.Services
             {
                 Console.WriteLine($"{i + 1}. {restaurante.Produtos[i].Nome} - R${restaurante.Produtos[i].Preco}");
             }
-
-            Console.WriteLine("0. sair");
-            if (int.TryParse(Helpers.LerString("Escolha um produto para adicionar ao carrinho: "), out int escolha) && escolha > 0 && escolha <= restaurante.Produtos.Count)
-            {
-                cliente.Carrinho.AdicionarProduto(restaurante.Produtos[escolha - 1]);
-                Console.WriteLine("Produto adicionado ao carrinho!");
-                Console.ReadLine();
-            }
+            int index = Helpers.LerInteiroComValorMaximo("Escolha um produto para adicionar ao carrinho: ", restaurante.Produtos.Count);
+            Produto produto = restaurante.Produtos[index];
+            Console.Clear();
+            int quantidade = Helpers.LerInteiroComValorMaximo($"A quantidade máxima do produto {produto.Nome} é de {produto.Quantidade} unidades. Informe  a quantidade desejada: ", produto.Quantidade);
+            produto.Quantidade = quantidade;
+            cliente.Carrinho.AdicionarProduto(produto);
+            Console.WriteLine("Produto adicionado ao carrinho!");
+            Helpers.LerOpcaoSair();
         }
 
 
