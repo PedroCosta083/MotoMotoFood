@@ -9,16 +9,28 @@ namespace MotoMotoFood.Models
         public string Descricao { get; set; }
         public int Quantidade { get; set; }
         public int TempoPreparo { get; set; }
+        public string ChaveRestauranteOrigem {  get; set; }
 
-        public Produto(string nome, decimal preco, string descricao, int quantidade, int tempoPreparo)
+        public Produto(string nome, decimal preco, string descricao, int quantidade, int tempoPreparo, string chaveRestauranteOrigem)
         {
-            Validate(nome,preco,quantidade,tempoPreparo);
+            Validate(nome, preco, quantidade, tempoPreparo);
 
             Nome = nome;
             Preco = preco;
             Descricao = descricao;
             Quantidade = quantidade;
             TempoPreparo = tempoPreparo;
+            ChaveRestauranteOrigem = chaveRestauranteOrigem;
+        }
+
+        public Produto(Produto produto)
+        {
+            Nome = produto.Nome;
+            Preco = produto.Preco;
+            Descricao = produto.Descricao;
+            Quantidade = produto.Quantidade;
+            TempoPreparo = produto.TempoPreparo;
+            ChaveRestauranteOrigem = produto.ChaveRestauranteOrigem;
         }
 
         public void AtualizarPreco(decimal novoPreco)

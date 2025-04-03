@@ -26,6 +26,23 @@ namespace MotoMotoFood.Services
             }
         }
 
+        public static bool LerBool(string mensagem)
+        {
+            while (true)
+            {
+                Console.Write(mensagem + " (Sim/Não): ");
+                string entrada = Console.ReadLine()?.Trim().ToLower(); // Remove espaços e converte para minúsculas
+
+                if (entrada == "sim" || entrada == "s")
+                    return true;
+                if (entrada == "não" || entrada == "nao" || entrada == "n")
+                    return false;
+
+                Console.WriteLine("Entrada inválida! Digite 'Sim' ou 'Não'.");
+            }
+        }
+
+
         public static string LerEmail(string mensagem)
         {
             string entrada;

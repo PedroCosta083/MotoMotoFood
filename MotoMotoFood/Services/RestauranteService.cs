@@ -79,7 +79,8 @@ namespace DeliveryConsoleApp.Services
                     preco,
                     descricao,
                     quantidade,
-                    tempoPreparo
+                    tempoPreparo,
+                    restaurante.Email
                 );
             restaurante.Produtos.Add(produto);
         }

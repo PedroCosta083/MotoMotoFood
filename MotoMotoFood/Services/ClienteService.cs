@@ -13,7 +13,7 @@ namespace DeliveryConsoleApp.Services
                 Console.WriteLine("=== Menu Cliente ===");
                 Console.WriteLine("1. Visualizar Restaurantes");
                 Console.WriteLine("2. Visualizar Carrinho");
-                Console.WriteLine("3. Visualizar Conta");
+                Console.WriteLine("3. Gerenciar Conta");
                 Console.WriteLine("4. Visualizar Pedidos");
                 Console.WriteLine("5. Sair");
                 string opcao = Helpers.LerString("Escolha uma opção: ");
@@ -22,6 +22,11 @@ namespace DeliveryConsoleApp.Services
                 {
                     case "1":
                         VisualizarRestaurantes(cliente, restaurantes);
+                        break;
+                    case "2":
+                        VisualizarCarrinho(cliente);
+                        break;
+                    case "3":
                         break;
                     case "5":
                         return;
@@ -52,18 +57,54 @@ namespace DeliveryConsoleApp.Services
         {
             Console.Clear();
             Console.WriteLine($"=== Produtos de {restaurante.NomeEstabelecimento} ===");
-            for (int i = 0; i < restaurante.Produtos.Count; i++)
+
+            var produtosDisponiveis = restaurante.Produtos
+                .Where(p => p.Quantidade > 0)
+                .ToList();
+
+            if (!produtosDisponiveis.Any())
             {
-                Console.WriteLine($"{i + 1}. {restaurante.Produtos[i].Nome} - R${restaurante.Produtos[i].Preco}");
+                Console.WriteLine("Nenhum produto disponível no momento.");
+                Helpers.LerOpcaoSair();
+                return;
             }
-            int index = Helpers.LerInteiroComValorMaximo("Escolha um produto para adicionar ao carrinho: ", restaurante.Produtos.Count);
-            Produto produto = restaurante.Produtos[index];
+
+            for (int i = 0; i < produtosDisponiveis.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {produtosDisponiveis[i].Nome} - R${produtosDisponiveis[i].Preco} (Quantidade: {produtosDisponiveis[i].Quantidade})");
+            }
+
+            int index = Helpers.LerInteiroComValorMaximo("Escolha um produto para adicionar ao carrinho: ", produtosDisponiveis.Count);
+            Produto produto = new Produto(produtosDisponiveis[index]);
+
             Console.Clear();
-            int quantidade = Helpers.LerInteiroComValorMaximo($"A quantidade máxima do produto {produto.Nome} é de {produto.Quantidade} unidades. Informe  a quantidade desejada: ", produto.Quantidade);
+            int quantidade = Helpers.LerInteiroComValorMaximo(
+                $"A quantidade máxima do produto {produto.Nome} é de {produto.Quantidade} unidades. Informe a quantidade desejada: ",
+                produto.Quantidade
+            );
+
             produto.Quantidade = quantidade;
-            cliente.Carrinho.AdicionarProduto(produto);
+
+            if (!cliente.Carrinho.AdicionarProduto(produto))
+            {
+                Console.WriteLine("Você só pode adicionar produtos do mesmo restaurante ao carrinho!");
+                Console.WriteLine("Seu carrinho já contém produtos de outro restaurante.");
+
+                if (Helpers.LerBool("Deseja esvaziar o carrinho?"))
+                {
+                    cliente.CriarNovoCarrinho();
+                    cliente.Carrinho.AdicionarProduto(produto);
+                }
+                Helpers.LerOpcaoSair();
+            }
+
             Console.WriteLine("Produto adicionado ao carrinho!");
             Helpers.LerOpcaoSair();
+        }
+
+        private static void VisualizarCarrinho(Cliente cliente)
+        {
+
         }
 
 
