@@ -7,53 +7,24 @@ namespace DeliveryConsoleApp.Services
 {
     public static class AutenticacaoService
     {
-        public static void Login(List<Cliente> clientes, List<Restaurante> restaurantes, List<Entregador> entregadores)
+        public static void Login(List<Usuario>usuarios)
         {
             string email = Helpers.LerEmail("Digite seu email: ");
             string password = Helpers.LerString("Digite sua senha: ");
 
-            var cliente = clientes.Find(c => c.Email == email);
-            if (cliente != null)
+            var usuario = usuarios.Find(c => c.Email == email);
+            switch (usuario)
             {
-                if (cliente.VerificarSenha(password))
-                {
-                    ClienteService.MenuCliente(cliente, restaurantes);
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine("Senha incorreta!");
-                    return;
-                }
-            }
+                case Restaurante restaurante:
+                        RestauranteService.MenuRestaurante(restaurante);
+                        return;
+                case Cliente cliente:
 
-            var restaurante = restaurantes.Find(r => r.Email == email);
-            if (restaurante != null)
-            {
-                if (restaurante.VerificarSenha(password))
-                {
-                    RestauranteService.MenuRestaurante(restaurante);
+                    ClienteService.MenuCliente(cliente, usuarios.OfType<Restaurante>().ToList());
                     return;
-                }
-                else 
-                {
-                    Console.WriteLine("Senha incorreta!");
-                    return;
-                }
-            }
-
-            var entregador = entregadores.Find(e => e.Email == email);
-            if (entregador != null)
-            {
-                if (entregador.VerificarSenha(password))
-                {
+                case Entregador entregador:
                     EntregadorService.MenuEntregador(entregador);
                     return;
-                }
-                else
-                {
-                    Console.WriteLine("Senha incorreta!");
-                }
             }
 
             Console.WriteLine("Usuário nao encontrado!");
@@ -81,7 +52,7 @@ namespace DeliveryConsoleApp.Services
             var novoEndereco = new Endereco(rua, numero, cep);
             return novoEndereco;
         }
-        public static void Cadastrar(List<Cliente> clientes, List<Restaurante> restaurantes, List<Entregador> entregadores)
+        public static void Cadastrar(List<Usuario> usuarios)
         {
             Console.Clear();
             Console.WriteLine("=== CADASTRO ===");
@@ -94,13 +65,13 @@ namespace DeliveryConsoleApp.Services
             switch (opcao)
             {
                 case "1":
-                    CadastrarCliente(clientes);
+                    CadastrarCliente(usuarios);
                     break;
                 case "2":
-                    CadastrarRestaurante(restaurantes);
+                    CadastrarRestaurante(usuarios);
                     break;
                 case "3":
-                    CadastrarEntregador(entregadores);
+                    CadastrarEntregador(usuarios);
                     break;
                 case "4":
                     return;
@@ -111,7 +82,7 @@ namespace DeliveryConsoleApp.Services
             }
         }
 
-        private static void CadastrarCliente(List<Cliente> clientes)
+        private static void CadastrarCliente(List<Usuario> clientes)
         {
             Console.Clear();
             Console.WriteLine("=== CADASTRO DE CLIENTE ===");
@@ -130,10 +101,11 @@ namespace DeliveryConsoleApp.Services
 
             clientes.Add(novoCliente);
             Console.WriteLine("\nCliente cadastrado com sucesso!");
+            Console.WriteLine("\nAperte ENTER para continuar!");
             Console.ReadKey();
         }
 
-        private static void CadastrarRestaurante(List<Restaurante> restaurantes)
+        private static void CadastrarRestaurante(List<Usuario> restaurantes)
         {
             Console.Clear();
             Console.WriteLine("=== CADASTRO DE RESTAURANTE ===");
@@ -160,7 +132,7 @@ namespace DeliveryConsoleApp.Services
             Console.ReadKey();
         }
 
-        private static void CadastrarEntregador(List<Entregador> entregadores)
+        private static void CadastrarEntregador(List<Usuario> entregadores)
         {
             Console.Clear();
             Console.WriteLine("=== CADASTRO DE ENTREGADOR ===");

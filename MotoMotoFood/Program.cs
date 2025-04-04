@@ -8,10 +8,7 @@ namespace DeliveryConsoleApp
 {
     class Program
     {
-        static List<Cliente> clientes = new List<Cliente>();
-        static List<Restaurante> restaurantes = new List<Restaurante>();
-        static List<Entregador> entregadores = new List<Entregador>();
-
+        static List<Usuario> usuarios = new List<Usuario>();
         static void Main()
         {
             while (true)
@@ -21,16 +18,15 @@ namespace DeliveryConsoleApp
                 Console.WriteLine("1. Login");
                 Console.WriteLine("2. Cadastrar-se");
                 Console.WriteLine("3. Sair");
-                //Console.Write("Escolha uma opção: ");
                 string opcao = Helpers.LerString("Escolha uma opção: ");
 
                 switch (opcao)
                 {
                     case "1":
-                        AutenticacaoService.Login(clientes, restaurantes, entregadores);
+                        AutenticacaoService.Login(usuarios);
                         break;
                     case "2":
-                        AutenticacaoService.Cadastrar(clientes,restaurantes,entregadores);
+                        AutenticacaoService.Cadastrar(usuarios);
                         break;
                     case "3":
                         return;

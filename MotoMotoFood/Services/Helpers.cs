@@ -10,6 +10,7 @@ namespace MotoMotoFood.Services
 {
     public static class Helpers
     {
+        private static readonly Regex regexEmail = new Regex(@"^[^@\s]+@[^@\s]+.[^@\s]+$", RegexOptions.Compiled);
         public static string LerString(string mensagem)
         {
             string entrada;
@@ -33,7 +34,7 @@ namespace MotoMotoFood.Services
                 Console.Write(mensagem);
                 entrada = Console.ReadLine();
 
-                if (!string.IsNullOrWhiteSpace(entrada) && entrada.Contains("@"))
+                if (!string.IsNullOrWhiteSpace(entrada) && regexEmail.IsMatch(entrada))
                 {
                     return entrada;
                 }
@@ -127,7 +128,7 @@ namespace MotoMotoFood.Services
                 if (!string.IsNullOrWhiteSpace(entrada) && ValidarPlaca(entrada))
                     return entrada;
 
-                Console.WriteLine("Entrada inválida! CNPJ inválido.");
+                Console.WriteLine("Entrada inválida! Placa inválido.");
             }
         }
 

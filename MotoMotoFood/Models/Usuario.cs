@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MotoMotoFood.Models
 {
@@ -6,6 +9,11 @@ namespace MotoMotoFood.Models
     {
         public string Nome { get; private set; }
         public string Email { get; private set; }
+
+        private byte[] senhaHash;
+
+        private byte[] senhaSalt;
+
         public string Password { get; private set; }
         public Endereco Endereco { get; private set; }
         public string Telefone { get; private set; }
@@ -15,15 +23,27 @@ namespace MotoMotoFood.Models
         {
             Nome = nome;
             Email = email;
-            Password = password;
+            GerarHashSenha(password);
             Endereco = endereco;
             Telefone = telefone;
             Conta = new Conta();
         }
-
-        public bool VerificarSenha(string senha)
+        public void GerarHashSenha(string senha)
         {
-            return senha == Password;
+            using (HMACSHA256 hmac = new HMACSHA256())
+            {
+                senhaSalt = hmac.Key;
+                senhaHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(senha));
+            }
+        }
+
+        public bool VerificarSenha(string senhaTentativa)
+        {
+            using (HMACSHA256 hmac = new HMACSHA256(senhaSalt))
+            {
+                byte[] hashTentativa = hmac.ComputeHash(Encoding.UTF8.GetBytes(senhaTentativa));
+                return StructuralComparisons.StructuralEqualityComparer.Equals(hashTentativa, senhaHash);
+            }
         }
     }
 }
