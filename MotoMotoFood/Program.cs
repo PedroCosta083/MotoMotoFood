@@ -40,11 +40,14 @@ namespace DeliveryConsoleApp
 
         public static void inicializar()
         {
-            clientes.Add(new Cliente("j", "j@j", "mestre123", new Endereco("j", "j", "s"), "a"));
-            restaurantes.Add(new Restaurante("j", "j@j", "j@jj", "mestre123", new Endereco("j", "j", "s"), "a", "12312312312345"));
-            restaurantes[0].AdicionarProduto(new Produto("bolo", 12, "doce", 2, 20, restaurantes[0].Email));
-            restaurantes.Add(new Restaurante("r", "r@r", "r@r", "mestre123", new Endereco("j", "j", "s"), "a", "12312312312345"));
-            restaurantes[1].AdicionarProduto(new Produto("cafe", 12, "cafe", 2, 20, restaurantes[1].Email));
+            var restaurante1 = new Restaurante("j", "j@j", "j@jj", "mestre123", new Endereco("j", "j", "s"), "a", "12312312312345");
+            var restaurante2 = new Restaurante("r", "r@r", "r@r", "mestre123", new Endereco("j", "j", "s"), "a", "12312312312345");
+            usuarios.Add(new Cliente("j", "j@j", "mestre123", new Endereco("j", "j", "s"), "a"));
+            usuarios.Add(restaurante1);
+            usuarios.Add(restaurante2);
+
+           restaurante1.AdicionarProduto(new Produto("bolo", 12, "doce", 2, 20, usuarios[1].Email));
+           restaurante2.AdicionarProduto(new Produto("cafe", 12, "cafe", 2, 20, usuarios[2].Email));
         }
     }
 }
