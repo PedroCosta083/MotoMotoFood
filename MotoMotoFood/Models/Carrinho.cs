@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MotoMotoFood.Services;
 
 namespace MotoMotoFood.Models
 {
@@ -13,15 +14,22 @@ namespace MotoMotoFood.Models
             Produtos = new Dictionary<Produto, int>();
         }
 
-        public void AdicionarProduto(Produto produto, int quantidade = 1)
+        public bool AdicionarProduto(Produto produto)
         {
-            if (quantidade <= 0)
-                throw new ArgumentException("A quantidade deve ser maior que zero.");
+            if (Produtos.Any())
+            {
+                string chaveRestauranteCarrinho = Produtos.Keys.First().ChaveRestauranteOrigem;
 
-            if (Produtos.ContainsKey(produto))
-                Produtos[produto] += quantidade;
-            else
-                Produtos[produto] = quantidade;
+                if (produto.ChaveRestauranteOrigem != chaveRestauranteCarrinho)
+                {
+                    return false;
+                }
+                
+            }
+            Produtos[produto] = produto.Quantidade;
+            Console.WriteLine($"Produto {produto.Nome} adicionado ao carrinho!");
+            return true;
+
         }
 
         public void RemoverProduto(Produto produto, int quantidade = 1)

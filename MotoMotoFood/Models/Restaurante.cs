@@ -1,4 +1,5 @@
 ﻿using MotoMotoFood.Models;
+using MotoMotoFood.Services;
 
 public class Restaurante : Usuario
 {
@@ -30,10 +31,8 @@ public class Restaurante : Usuario
     public void ListarProdutos()
     {
         Console.WriteLine($"Produtos do restaurante {NomeEstabelecimento}:");
-        foreach (var produto in Produtos)
-        {
-            Console.WriteLine($"- {produto.Nome}: {produto.Preco:C}");
-        }
+        Console.WriteLine(Produtos.Any() ? string.Join("\n\n", Produtos) : "Nenhum produto cadastrado.");
+        Helpers.LerOpcaoSair();
     }
 
 }

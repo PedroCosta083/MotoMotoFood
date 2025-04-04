@@ -11,6 +11,7 @@ namespace DeliveryConsoleApp
         static List<Usuario> usuarios = new List<Usuario>();
         static void Main()
         {
+            inicializar();
             while (true)
             {
                 Console.Clear();
@@ -35,6 +36,15 @@ namespace DeliveryConsoleApp
                         break;
                 }
             }
+        }
+
+        public static void inicializar()
+        {
+            clientes.Add(new Cliente("j", "j@j", "mestre123", new Endereco("j", "j", "s"), "a"));
+            restaurantes.Add(new Restaurante("j", "j@j", "j@jj", "mestre123", new Endereco("j", "j", "s"), "a", "12312312312345"));
+            restaurantes[0].AdicionarProduto(new Produto("bolo", 12, "doce", 2, 20, restaurantes[0].Email));
+            restaurantes.Add(new Restaurante("r", "r@r", "r@r", "mestre123", new Endereco("j", "j", "s"), "a", "12312312312345"));
+            restaurantes[1].AdicionarProduto(new Produto("cafe", 12, "cafe", 2, 20, restaurantes[1].Email));
         }
     }
 }

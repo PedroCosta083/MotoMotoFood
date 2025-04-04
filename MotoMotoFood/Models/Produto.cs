@@ -4,21 +4,33 @@ namespace MotoMotoFood.Models
 {
     public class Produto
     {
-        public string Nome { get; }
-        public decimal Preco { get; private set; }
-        public string Descricao { get; }
-        public int Quantidade { get; private set; }
-        public int TempoPreparo { get; }
+        public string Nome { get; set; }
+        public decimal Preco { get; set; }
+        public string Descricao { get; set; }
+        public int Quantidade { get; set; }
+        public int TempoPreparo { get; set; }
+        public string ChaveRestauranteOrigem {  get; set; }
 
-        public Produto(string nome, decimal preco, string descricao, int quantidade, int tempoPreparo)
+        public Produto(string nome, decimal preco, string descricao, int quantidade, int tempoPreparo, string chaveRestauranteOrigem)
         {
-            Validate(nome,preco,quantidade,tempoPreparo);
+            Validate(nome, preco, quantidade, tempoPreparo);
 
             Nome = nome;
             Preco = preco;
             Descricao = descricao;
             Quantidade = quantidade;
             TempoPreparo = tempoPreparo;
+            ChaveRestauranteOrigem = chaveRestauranteOrigem;
+        }
+
+        public Produto(Produto produto)
+        {
+            Nome = produto.Nome;
+            Preco = produto.Preco;
+            Descricao = produto.Descricao;
+            Quantidade = produto.Quantidade;
+            TempoPreparo = produto.TempoPreparo;
+            ChaveRestauranteOrigem = produto.ChaveRestauranteOrigem;
         }
 
         public void AtualizarPreco(decimal novoPreco)
@@ -64,5 +76,11 @@ namespace MotoMotoFood.Models
             if (tempoPreparo < 0)
                 throw new ArgumentException("O tempo de preparo não pode ser negativo.");
         }
+
+        public override string? ToString()
+        {
+            return $"Nome: {Nome}\nPreço: {Preco:C}\nDescricao: {Descricao}\nQuantidade: {Quantidade}\nTempo preparo: {TempoPreparo} minutos";
+        }
+
     }
 }
