@@ -19,17 +19,23 @@ namespace MotoMotoFood.Models
             if (Produtos.Any())
             {
                 string chaveRestauranteCarrinho = Produtos.Keys.First().ChaveRestauranteOrigem;
-
+                string produtoNome = Produtos.Keys.First().Nome;
                 if (produto.ChaveRestauranteOrigem != chaveRestauranteCarrinho)
                 {
+                    Console.WriteLine("Você só pode adicionar produtos do mesmo restaurante ao carrinho!");
+                    Console.WriteLine("Seu carrinho já contém produtos de outro restaurante.");
                     return false;
                 }
-                
+                if (produtoNome == produto.Nome)
+                {
+                    Console.WriteLine("Ja existe este produto no carrinho");
+                    return false;
+                }
             }
+           
             Produtos[produto] = produto.Quantidade;
-            Console.WriteLine($"Produto {produto.Nome} adicionado ao carrinho!");
+            //Console.WriteLine($"Quantidade do produto {produto.Nome} atualizada no carrinho!");
             return true;
-
         }
 
         public void RemoverProduto(Produto produto, int quantidade = 1)
@@ -51,9 +57,11 @@ namespace MotoMotoFood.Models
         public void ExibirCarrinho()
         {
             Console.WriteLine("=== Carrinho de Compras: ===");
+                var i = 1;
             foreach (var item in Produtos)
             {
-                Console.WriteLine($"Produto: {item.Key.Nome} | Quantidade: {item.Value} | Subtotal: {item.Key.Preco * item.Value:C}");
+                Console.WriteLine($"{i}| Produto: {item.Key.Nome} | Quantidade: {item.Value} | Subtotal: {item.Key.Preco * item.Value:C}");
+                i++;
             }
             Console.WriteLine($"Total: {CalcularTotal():C}\n");
         }

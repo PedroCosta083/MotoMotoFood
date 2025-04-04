@@ -110,10 +110,16 @@ namespace MotoMotoFood.Services
             while (true)
             {
                 Console.Write(mensagem);
-                if(int.TryParse(Console.ReadLine(), out int escolha) && escolha <= maxRange && escolha > 0)
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out int escolha) && escolha <= maxRange && escolha > 0)
                 {
-                    return escolha-1;
+                    return escolha - 1;
                 }
+                if (!string.IsNullOrWhiteSpace(input) && input.ToLower() == "v"  )
+                {
+                    return -1 ;
+                }
+                
                 Console.WriteLine("Opção inválida! Digite um número válido.");
             }
         }
@@ -180,6 +186,23 @@ namespace MotoMotoFood.Services
                     return;
                 }
                 Console.WriteLine("Saldo insuficiente!");
+                System.Threading.Thread.Sleep(2000);
+                return;
+            }
+        }
+
+        public static void LerValorParaDeposito(string mensagem, Conta conta)
+        {
+            while (true)
+            {
+
+                var input = LerDecimal(mensagem);
+                if (input == 99999) return;
+                if (conta.Depositar(input))
+                {
+                    Console.WriteLine("Deposito realizado com Sucesso!");
+                    return;
+                }
             }
         }
 

@@ -24,9 +24,10 @@ namespace DeliveryConsoleApp.Services
                         VisualizarRestaurantes(cliente, restaurantes);
                         break;
                     case "2":
-                        VisualizarCarrinho(cliente);
+                        CarrinhoService.VisualizarCarrinho(cliente);
                         break;
                     case "3":
+                        ContaService.MenuContaCliente(cliente.Conta);
                         break;
                     case "5":
                         return;
@@ -45,7 +46,7 @@ namespace DeliveryConsoleApp.Services
             {
                 Console.WriteLine($"{i + 1}. {restaurantes[i].NomeEstabelecimento}");
             }
-
+            Console.WriteLine("0. Sair");
             Console.Write("Escolha um restaurante: ");
             if (int.TryParse(Console.ReadLine(), out int escolha) && escolha > 0 && escolha <= restaurantes.Count)
             {
@@ -73,41 +74,9 @@ namespace DeliveryConsoleApp.Services
             {
                 Console.WriteLine($"{i + 1}. {produtosDisponiveis[i].Nome} - R${produtosDisponiveis[i].Preco} (Quantidade: {produtosDisponiveis[i].Quantidade})");
             }
-
-            int index = Helpers.LerInteiroComValorMaximo("Escolha um produto para adicionar ao carrinho: ", produtosDisponiveis.Count);
-            Produto produto = new Produto(produtosDisponiveis[index]);
-
-            Console.Clear();
-            int quantidade = Helpers.LerInteiroComValorMaximo(
-                $"A quantidade máxima do produto {produto.Nome} é de {produto.Quantidade} unidades. Informe a quantidade desejada: ",
-                produto.Quantidade
-            );
-
-            produto.Quantidade = quantidade;
-
-            if (!cliente.Carrinho.AdicionarProduto(produto))
-            {
-                Console.WriteLine("Você só pode adicionar produtos do mesmo restaurante ao carrinho!");
-                Console.WriteLine("Seu carrinho já contém produtos de outro restaurante.");
-
-                if (Helpers.LerBool("Deseja esvaziar o carrinho?"))
-                {
-                    cliente.CriarNovoCarrinho();
-                    cliente.Carrinho.AdicionarProduto(produto);
-                }
-                Helpers.LerOpcaoSair();
-            }
-
-            Console.WriteLine("Produto adicionado ao carrinho!");
-            Helpers.LerOpcaoSair();
-        }
-
-        private static void VisualizarCarrinho(Cliente cliente)
-        {
+            CarrinhoService.AdicionarProdutoAoCarrinho(cliente, produtosDisponiveis);
 
         }
-
-
 
     }
 }

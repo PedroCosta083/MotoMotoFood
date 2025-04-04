@@ -8,6 +8,7 @@ namespace MotoMotoFood.Models
         public decimal Preco { get; set; }
         public string Descricao { get; set; }
         public int Quantidade { get; set; }
+        public int QuantidadeEstoque { get; set; }
         public int TempoPreparo { get; set; }
         public string ChaveRestauranteOrigem {  get; set; }
 

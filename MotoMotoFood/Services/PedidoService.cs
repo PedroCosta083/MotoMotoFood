@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MotoMotoFood.Services
 {
-    internal class ValidateUser
+    public static class PedidoService
     {
     }
 }

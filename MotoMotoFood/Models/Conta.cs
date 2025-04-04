@@ -13,20 +13,15 @@ namespace MotoMotoFood.Models
             Saldo = 0;
         }
 
-        public void Depositar(decimal valor)
+        public bool Depositar(decimal valor)
         {
-            if (valor <= 0)
-                throw new ArgumentException("O valor do depósito deve ser positivo.");
-
             Saldo += valor;
             DataUltimoDeposito = DateTime.Now;
+            return true;
         }
 
         public bool DeduzirSaldo(decimal valor)
         {
-            if (valor <= 0)
-                throw new ArgumentException("O valor do débito deve ser positivo.");
-
             if (Saldo >= valor)
             {
                 Saldo -= valor;
